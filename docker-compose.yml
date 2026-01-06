@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: chat-backend
+    ports:
+      - "5000:5000"
+    networks:
+      - chat-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: chat-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - chat-network
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+networks:
+  chat-network:
+    driver: bridge

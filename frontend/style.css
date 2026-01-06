@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+}
+
+/* MAIN APP */
+.app {
+  max-width: 420px;
+  height: 100vh;
+  margin: auto;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  padding: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  background: #5a67d8;
+  color: white;
+}
+
+/* CHAT AREA */
+.chat-area {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f1f5f9;
+}
+
+/* MESSAGE ROW */
+.msg {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.msg.left {
+  justify-content: flex-start;
+}
+
+.msg.right {
+  justify-content: flex-end;
+}
+
+/* CHAT BUBBLE */
+.bubble {
+  max-width: 75%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  animation: fade 0.2s ease-in;
+}
+
+.left .bubble {
+  background: #e2e8f0;
+  border-top-left-radius: 0;
+}
+
+.right .bubble {
+  background: #5a67d8;
+  color: white;
+  border-top-right-radius: 0;
+}
+
+.user {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.time {
+  font-size: 10px;
+  opacity: 0.6;
+  display: block;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* INPUT AREA */
+.input-area {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.name-input {
+  width: 80px;
+}
+
+.msg-input {
+  flex: 1;
+}
+
+.input-area input {
+  padding: 8px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.input-area button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #5a67d8;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* DESKTOP VIEW */
+@media (min-width: 768px) {
+  .app {
+    height: 600px;
+    margin-top: 40px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  }
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

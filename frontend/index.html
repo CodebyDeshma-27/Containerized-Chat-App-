@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+    <header class="header">
+      💬 Chat App
+    </header>
+
+    <div class="chat-area" id="chatBox"></div>
+
+    <div class="input-area">
+      <input type="text" id="name" placeholder="Name" class="name-input" />
+      <input type="text" id="message" placeholder="Type a message..." class="msg-input" />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    let lastUser = "";
+
+    function sendMessage() {
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const chatBox = document.getElementById("chatBox");
+
+      if (!name || !message) return;
+
+      const msg = document.createElement("div");
+      msg.classList.add("msg");
+
+      msg.classList.add(name === lastUser ? "right" : "left");
+
+      msg.innerHTML = `
+        <div class="bubble">
+          <span class="user">${name}</span>
+          <p>${message}</p>
+          <span class="time">${new Date().toLocaleTimeString()}</span>
+        </div>
+      `;
+
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      lastUser = name;
+      document.getElementById("message").value = "";
+    }
+  </script>
+
+</body>
+</html>

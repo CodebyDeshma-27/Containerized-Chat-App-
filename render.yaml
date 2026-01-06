@@ -1,0 +1,26 @@
+services:
+  # Backend Service
+  - type: web
+    name: chat-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python backend/app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /messages
+
+  # Frontend Service
+  - type: web
+    name: chat-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: echo "No build needed"
+    staticPublishPath: ./frontend
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
