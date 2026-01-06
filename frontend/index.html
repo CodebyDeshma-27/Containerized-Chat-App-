@@ -54,22 +54,16 @@
         
         chatBox.innerHTML = '';
         
-        messages.forEach((msg, index) => {
+        messages.forEach((msg) => {
           const msgDiv = document.createElement("div");
-          msgDiv.classList.add("msg");
-          
-          const prevUser = index > 0 ? messages[index - 1].user : null;
-          msgDiv.classList.add(msg.user === prevUser ? "right" : "left");
-
-          const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.user}`;
+          msgDiv.classList.add("message");
           
           msgDiv.innerHTML = `
-            <img src="${avatar}" alt="${msg.user}" class="avatar">
-            <div class="bubble">
-              <span class="user">${msg.user}</span>
-              <p>${msg.message}</p>
+            <div class="msg-header">
+              <strong>${msg.user}</strong>
               <span class="time">${new Date(msg.timestamp).toLocaleTimeString()}</span>
             </div>
+            <div class="msg-text">${msg.message}</div>
           `;
 
           chatBox.appendChild(msgDiv);
