@@ -23,34 +23,72 @@
   </div>
 
   <script>
+    const BACKEND_URL = 'https://chat-backend-l2uy.onrender.com';
     let lastUser = "";
 
-    function sendMessage() {
+    async function sendMessage() {
       const name = document.getElementById("name").value.trim();
       const message = document.getElementById("message").value.trim();
-      const chatBox = document.getElementById("chatBox");
 
       if (!name || !message) return;
 
-      const msg = document.createElement("div");
-      msg.classList.add("msg");
+      try {
+        await fetch(`${BACKEND_URL}/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user: name, message: message })
+        });
 
-      msg.classList.add(name === lastUser ? "right" : "left");
-
-      msg.innerHTML = `
-        <div class="bubble">
-          <span class="user">${name}</span>
-          <p>${message}</p>
-          <span class="time">${new Date().toLocaleTimeString()}</span>
-        </div>
-      `;
-
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      lastUser = name;
-      document.getElementById("message").value = "";
+        document.getElementById("message").value = "";
+        fetchMessages();
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
     }
+
+    async function fetchMessages() {
+      try {
+        const response = await fetch(`${BACKEND_URL}/messages`);
+        const messages = await response.json();
+        const chatBox = document.getElementById("chatBox");
+        
+        chatBox.innerHTML = '';
+        
+        messages.forEach((msg, index) => {
+          const msgDiv = document.createElement("div");
+          msgDiv.classList.add("msg");
+          
+          const prevUser = index > 0 ? messages[index - 1].user : null;
+          msgDiv.classList.add(msg.user === prevUser ? "right" : "left");
+
+          const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.user}`;
+          
+          msgDiv.innerHTML = `
+            <img src="${avatar}" alt="${msg.user}" class="avatar">
+            <div class="bubble">
+              <span class="user">${msg.user}</span>
+              <p>${msg.message}</p>
+              <span class="time">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+            </div>
+          `;
+
+          chatBox.appendChild(msgDiv);
+        });
+        
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    }
+
+    // Enter key to send
+    document.getElementById("message")?.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Fetch messages every second
+    setInterval(fetchMessages, 1000);
+    fetchMessages();
   </script>
 
 </body>
